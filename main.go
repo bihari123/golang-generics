@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/icza/gog"
+)
 
 var ints = map[string]int64{
 	"first":  34,
@@ -95,26 +99,28 @@ func main() {
 		SumIntsOrFloats[string, int64](ints),
 		SumIntsOrFloats[string, float64](floats))
 
-    // we can also remove the type argument
-    // Note that this isn’t always possible. For example, if you needed to call a generic function that
-    // had no arguments, you would need to include the type arguments in the function call.
+	// we can also remove the type argument
+	// Note that this isn’t always possible. For example, if you needed to call a generic function that
+	// had no arguments, you would need to include the type arguments in the function call.
 
-    fmt.Printf("Generic Sums, type parameters inferred: %v and %v\n",
-        SumIntsOrFloats(ints),
-        SumIntsOrFloats(floats))
+	fmt.Printf("Generic Sums, type parameters inferred: %v and %v\n",
+		SumIntsOrFloats(ints),
+		SumIntsOrFloats(floats))
 
-fmt.Printf("Generic Sums with Constraint: %v and %v\n",
-        SumNumbers(ints),
-        SumNumbers(floats)) // look below for explaination 
+	fmt.Printf("Generic Sums with Constraint: %v and %v\n",
+		SumNumbers(ints),
+		SumNumbers(floats)) // look below for explaination
 
+	//this is also explained below
+	Print([]string{"Hello, ", "playground\n"})
+	Print([]int{1, 2, 3})
+	fmt.Println()
 
-        //this is also explained below
-        Print([]string{"Hello, ", "playground\n"})
-        Print([]int{1,2,3})
+	// generic example in ternary operator in golang
 
-
-
-
+	x := 35
+	result := gog.If(x < 10, "isTrue", "isFalse")
+	fmt.Println(result)
 
 }
 
@@ -133,30 +139,28 @@ of those methods.
 
 */
 
-
-
 type Number interface {
-  int64 | float64 
+	int64 | float64
 }
 
-// SumNumbers sums the values of map m. IT supports both integers 
-// and floats as map values. 
+// SumNumbers sums the values of map m. IT supports both integers
+// and floats as map values.
 
-func SumNumbers[K comparable, V Number](m map[K]V) V{
-  var s V
-  for _,v:= range m{
-    s+=v 
-  }
-  return s 
+func SumNumbers[K comparable, V Number](m map[K]V) V {
+	var s V
+	for _, v := range m {
+		s += v
+	}
+	return s
 }
 
 //Generics one step ahead
 
-func Print[T any](s []T){
+func Print[T any](s []T) {
 
-  for _,v:= range s{
-    fmt.Print(v)
-  }
+	for _, v := range s {
+		fmt.Print(v)
+	}
 
 }
 
@@ -180,12 +184,10 @@ func (w worker) Work(){
 
 func DoWork[T any](things []T) {
     for _, v := range things {
-        
-      
+
+
       v.Work() ///////  HERE YOU WILL GET AN ERROR AS WORK() IS ONLY APPLIED TO WORKER TYPE, NOT "ANY" TYPE
     }
 }
 
-*/ 
-
-
+*/
